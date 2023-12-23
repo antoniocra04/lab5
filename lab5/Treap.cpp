@@ -1,38 +1,32 @@
 ﻿#include "Treap.h"
 #include "TreapNode.h"
-//TODO: убрать из СД операциии IO должны быть отдельно от СД
-#include <iostream>
-
-using namespace std;
 
 Treap::Treap()
 {
 	_root = nullptr;
 }
 
-TreapNode* Treap::Search(const int& x)
+TreapNode* Treap::Search(const int& key)
 {
 	TreapNode* current = _root;
 
-	if (current->_x == x)
+	if (current->_x == key)
 	{
 		return _root;
 	}
 
 	while (true)
 	{
-		if (current->_x == x)
+		if (current->_x == key)
 		{
 			return current;
 		}
 
-		if (x >= current->_x)
+		if (key >= current->_x)
 		{
 
 			if (current->_right == nullptr)
 			{
-				//TODO: убрать из СД операциии IO должны быть отдельно от СД
-				cout << "Element not found";
 				return nullptr;
 			}
 			else
@@ -55,7 +49,7 @@ TreapNode* Treap::Search(const int& x)
 	}
 }
 
-TreapNode* Treap::FindInsertionPoint(const int& x, const int& y)
+TreapNode* Treap::FindInsertionPoint(const int& key, const int& priority)
 {
 	if (_root == nullptr)
 	{
@@ -66,7 +60,7 @@ TreapNode* Treap::FindInsertionPoint(const int& x, const int& y)
 
 	while (true)
 	{
-		if (x >= current->_x)
+		if (key >= current->_x)
 		{
 			if (current->_right == nullptr)
 			{
@@ -74,7 +68,7 @@ TreapNode* Treap::FindInsertionPoint(const int& x, const int& y)
 			}
 			else
 			{
-				if (y > current->_y)
+				if (priority > current->_y)
 				{
 					return current;
 				}
@@ -91,7 +85,7 @@ TreapNode* Treap::FindInsertionPoint(const int& x, const int& y)
 			}
 			else
 			{
-				if (y > current->_y)
+				if (priority > current->_y)
 				{
 					return current;
 				}
@@ -102,33 +96,48 @@ TreapNode* Treap::FindInsertionPoint(const int& x, const int& y)
 	}
 }
 
-TreapNode* Treap::FindDeleteNode(const int& x)
+TreapNode* Treap::FindDeleteNode(const int& key)
 {
 	TreapNode* current = _root;
 
 	while (true)
 	{
-		if (x >= current->_x)
+		if (key >= current->_x)
 		{
-			if (current->_x == x)
+			if (current->_x == key)
 			{
 				return current;
 			}
 			else
 			{
-				current = current->_right;
+				if (current->_right != nullptr)
+				{
+					current = current->_right;
+				}
+				else
+				{
+					return nullptr;
+				}
+
 			}
 
 		}
 		else
 		{
-			if (current->_x == x)
+			if (current->_x == key)
 			{
 				return current;
 			}
 			else
 			{
-				current = current->_left;
+				if (current->_left != nullptr)
+				{
+					current = current->_left;
+				}
+				else
+				{
+					return nullptr;
+				}
 			}
 		}
 	}
@@ -158,128 +167,119 @@ TreapNode* Treap::Merge(TreapNode* firstTree, TreapNode* secondTree)
 	}
 }
 
-pair<TreapNode*, TreapNode*> Treap::Split(TreapNode* tree, const int& x)
+pair<TreapNode*, TreapNode*> Treap::Split(TreapNode* tree, const int& key)
 {
 	if (tree == nullptr)
 	{
 		return make_pair(nullptr, nullptr);
 	}
 	
-	if (x > tree->_x)
+	if (key > tree->_x)
 	{
-		pair<TreapNode*, TreapNode*> trees = Split(tree->_right, x);
+		pair<TreapNode*, TreapNode*> trees = Split(tree->_right, key);
 		tree->_right = trees.first;
 		return make_pair(tree, trees.second);
 	}
 	else
 	{
-		pair<TreapNode*, TreapNode*> trees = Split(tree->_left, x);
+		pair<TreapNode*, TreapNode*> trees = Split(tree->_left, key);
 		tree->_left = trees.second;
 		return make_pair(trees.first, tree);
 	}
 }
 
-Treap& Treap::AddNodeUnoptimized(const int& x, const int& y)
+Treap& Treap::AddNodeUnoptimized(const int& key, const int& priority)
 {
-	TreapNode* newNode = new TreapNode(x, y);
+	TreapNode* newNode = new TreapNode(key, priority);
 
-	pair<TreapNode*, TreapNode*> trees = Split(_root, x);
+	pair<TreapNode*, TreapNode*> trees = Split(_root, key);
 	TreapNode* newTree = Merge(trees.first, newNode);
 	_root = Merge(newTree, trees.second);
 	
 	return *this;
 }
 
-Treap& Treap::AddNodeOptimized(const int& x, const int& y)
+Treap& Treap::AddNodeOptimized(const int& key, const int& priority)
 {
-	_root = AddNodeOptimizedRecursion(_root, x, y);
+	_root = AddNodeOptimizedRecursion(_root, key, priority);
 	return *this;
 }
 
-TreapNode* Treap::AddNodeOptimizedRecursion(TreapNode* root, const int& x, const int& y)
+TreapNode* Treap::AddNodeOptimizedRecursion(TreapNode* root, const int& key, const int& priority)
 {
 	if (root == nullptr)
 	{
-		return new TreapNode(x, y);
+		return new TreapNode(key, priority);
 	}
 
-	if (y > root->_y)
+	if (priority > root->_y)
 	{
-		pair<TreapNode*, TreapNode*> trees = Split(_root, x);
-		TreapNode* newNode = new TreapNode(x,y, trees.first, trees.second);
+		pair<TreapNode*, TreapNode*> trees = Split(_root, key);
+		TreapNode* newNode = new TreapNode(key, priority, trees.first, trees.second);
 		return newNode;
 	}
-	else if (x < root->_x)
+	else if (key < root->_x)
 	{
-		root->_left = AddNodeOptimizedRecursion(root->_left, x, y);
+		root->_left = AddNodeOptimizedRecursion(root->_left, key, priority);
 	}
 	else
 	{
-		root->_right = AddNodeOptimizedRecursion(root->_right, x, y);
+		root->_right = AddNodeOptimizedRecursion(root->_right, key, priority);
 	}
 
 	return root;
 }
 
-Treap& Treap::DeleteNodeUnoptimized(const int& x)
+TreapNode* Treap::DeleteNodeUnoptimized(const int& key)
 {
-	pair<TreapNode*, TreapNode*> trees = Split(_root, x);
-	pair<TreapNode*, TreapNode*> trees2 = Split(trees.second, x+1);
-	_root = Merge(trees.first, trees2.second);
-	return *this;
-}
-
-Treap& Treap::DeleteNodeOptimized(const int& x)
-{
-	TreapNode* deleteNode = FindDeleteNode(x);
-
-	if (deleteNode->_left == nullptr && deleteNode->_right == nullptr)
+	TreapNode* deleteNode = FindDeleteNode(key);
+	if (deleteNode)
 	{
-		TreapNode* parent = FindInsertionPoint(deleteNode->_x+1, deleteNode->_y);
-		if (parent->_left->_x == deleteNode->_x)
-		{
-			parent->_left = nullptr;
-		}
-		else
-		{
-			parent->_right = nullptr;
-		}
-
-		delete deleteNode;
-
-		return *this;
+		pair<TreapNode*, TreapNode*> trees = Split(_root, key);
+		pair<TreapNode*, TreapNode*> trees2 = Split(trees.second, key + 1);
+		_root = Merge(trees.first, trees2.second);
+		return _root;
 	}
 
-	TreapNode* merged = Merge(deleteNode->_right, deleteNode->_left);
-	deleteNode->_left = merged->_left;
-	deleteNode->_right = merged->_right;
-	deleteNode->_x = merged->_x;
-	deleteNode->_y = merged->_y;
-
-	return *this;
-}
-//TODO: RSDN
-void Treap::PrintTreap(TreapNode* root, int space, int count) {
-	if (root == nullptr) {
-		return;
-	}
-
-	space += count;
-	PrintTreap(root->_right, space, count);
-
-	cout << endl;
-
-	for (int i = count; i < space; i++) {
-		cout << " ";
-	}
-
-	cout << root->_x << "," << root->_y << "\n";
-	PrintTreap(root->_left, space, count);
+	return nullptr;
 }
 
-void Treap::VisualisateTreap()
+TreapNode* Treap::DeleteNodeOptimized(const int& key)
 {
-	PrintTreap(_root);
+	TreapNode* deleteNode = FindDeleteNode(key);
+
+	if (deleteNode)
+	{
+		if (deleteNode->_left == nullptr && deleteNode->_right == nullptr)
+		{
+			TreapNode* parent = FindInsertionPoint(deleteNode->_x + 1, deleteNode->_y);
+			if (parent->_left->_x == deleteNode->_x)
+			{
+				parent->_left = nullptr;
+			}
+			else
+			{
+				parent->_right = nullptr;
+			}
+
+			delete deleteNode;
+
+			return _root;
+		}
+
+		TreapNode* merged = Merge(deleteNode->_right, deleteNode->_left);
+		deleteNode->_left = merged->_left;
+		deleteNode->_right = merged->_right;
+		deleteNode->_x = merged->_x;
+		deleteNode->_y = merged->_y;
+	}
+
+	return nullptr;
+}
+
+const TreapNode* Treap::GetRoot()
+{
+	return _root;
 }
 
 void Treap::RemoveAll(TreapNode* node)
