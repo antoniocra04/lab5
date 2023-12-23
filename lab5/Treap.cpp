@@ -1,5 +1,6 @@
 ﻿#include "Treap.h"
 #include "TreapNode.h"
+//TODO: убрать из СД операциии IO должны быть отдельно от СД
 #include <iostream>
 
 using namespace std;
@@ -30,6 +31,7 @@ TreapNode* Treap::Search(const int& x)
 
 			if (current->_right == nullptr)
 			{
+				//TODO: убрать из СД операциии IO должны быть отдельно от СД
 				cout << "Element not found";
 				return nullptr;
 			}
@@ -256,7 +258,7 @@ Treap& Treap::DeleteNodeOptimized(const int& x)
 
 	return *this;
 }
-
+//TODO: RSDN
 void Treap::PrintTreap(TreapNode* root, int space, int count) {
 	if (root == nullptr) {
 		return;

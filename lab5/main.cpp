@@ -18,8 +18,10 @@ void ValidInput(T& variable)
 
 void ControllerBinaryTree()
 {
+    //TODO: RSDN
     string menu = "Choose one of activity:\n1 - Add\n2 - Remove\n3 - Search\n4 - Search min value\n5 - Search max value\nq - Exit to main menu\nYour choice: ";
     int value;
+    //TODO: выделение пам€ти через new
     BinaryTree binaryTree;
     char mode = '\0';
 
@@ -29,6 +31,7 @@ void ControllerBinaryTree()
         cout << menu;
         ValidInput(mode);
         system("cls");
+        //TODO: RSDN
         switch (mode) {
         case '1':
             cout << "Enter value for adding: ";
@@ -42,6 +45,7 @@ void ControllerBinaryTree()
             {
                 cout << "Deletion successful!\n";
             }
+            //TODO: DRY - don't repeat yourself
             else
             {
                 cout << "No value " << value << " in binary tree!\n";
@@ -54,26 +58,31 @@ void ControllerBinaryTree()
             {
                 cout << "Value " << value << " is contained in binary tree!\n";
             }
+            //TODO: DRY - don't repeat yourself
             else
             {
                 cout << "No value " << value << " in binary tree!\n";
             }
             break;
         case '4':
+            //TODO: nullptr
             if (binaryTree.GetMin() != NULL)
             {
                 cout << "Value " << binaryTree.GetMin() << " is minimum in binary tree!\n";
             }
+            //TODO: DRY - don't repeat yourself
             else
             {
                 cout << "No nodes in binary tree!\n";
             }
             break;
         case '5':
+            //TODO: nullptr
             if (binaryTree.GetMax() != NULL)
             {
                 cout << "Value " << binaryTree.GetMax() << " is maximum in binary tree!\n";
             }
+            //TODO: DRY - don't repeat yourself
             else
             {
                 cout << "No nodes in binary tree!\n";
@@ -87,9 +96,13 @@ void ControllerBinaryTree()
 
 void ControllerTreap()
 {
+    //TODO: RSDN
     string menu = "Choose one of activity:\n1 - Add (Unoptimized)\n2 - Add (Optimized)\n3 - Delete (Unoptimized)\n4 - Delete (Optimized)\n5 - Search\nq - Exit to main menu\nYour choice: ";
+    //TODO: переменна€ должна объ€вл€тьс€ как можно ближе к инициализации RSDN
+    //TODO: RSDN naming
     int x;
     int y;
+    //TODO: выделение пам€ти через new
     Treap treap;
     char mode = '\0';
 
@@ -99,6 +112,7 @@ void ControllerTreap()
         cout << menu;
         ValidInput(mode);
         system("cls");
+        //TODO: RSDN
         switch (mode) {
         case '1':
             cout << "Enter x for adding: ";

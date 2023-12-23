@@ -158,6 +158,7 @@ bool BinaryTree::DeleteElement(const int& value)
 		delete deleteNode;
 		return true;
 	}
+	//TODO: RSDN
 	else if ((deleteNode->_left != nullptr && deleteNode->_right == nullptr) || (deleteNode->_left == nullptr && deleteNode->_right != nullptr))
 	{
 		if (deleteNode->_left != nullptr)
@@ -191,6 +192,7 @@ bool BinaryTree::DeleteElement(const int& value)
 	}
 }
 
+//TODO: RSDN
 void BinaryTree::PrintBinaryTree(Node* root, int space, int count) {
 	if (root == nullptr) {
 		return;
@@ -201,6 +203,7 @@ void BinaryTree::PrintBinaryTree(Node* root, int space, int count) {
 
 	cout << endl;
 
+	//TODO: RSDN
 	for (int i = count; i < space; i++) {
 		cout << " ";
 	}
@@ -218,6 +221,7 @@ int BinaryTree::GetMax()
 {
 	if (_root == nullptr)
 	{
+		//TODO: nullptr
 		return NULL;
 	}
 
@@ -235,6 +239,7 @@ int BinaryTree::GetMin()
 {
 	if (_root == nullptr)
 	{
+		//TODO: nullptr
 		return NULL;
 	}
 

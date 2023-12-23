@@ -1,5 +1,6 @@
 #pragma once
 
+//TODO: RSDN - нет комментариев
 class Node
 {
 public:
