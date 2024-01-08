@@ -42,6 +42,18 @@ Node* BinaryTree::FindInsertionPoint(const int& value)
 void BinaryTree::ChangeNodeInParent(Node* node, Node* changeNode)
 {
 	Node* parent = node->_parent;
+
+	if (parent->_left == nullptr)
+	{
+		parent->_right = changeNode;
+		return;
+	}
+	
+	if (parent->_right == nullptr)
+	{
+		parent->_left = changeNode;
+		return;
+	}
 	
 	if (parent->_left->_value == node->_value)
 	{
@@ -151,6 +163,13 @@ bool BinaryTree::DeleteElement(const int& value)
 	{
 		return false;
 	}
+
+	if (deleteNode == _root && _root->_left == nullptr && _root->_right == nullptr)
+	{
+		delete _root;
+		_root = nullptr;
+		return true;
+	}
 	
 	if (deleteNode->_left == nullptr && deleteNode->_right == nullptr)
 	{
@@ -158,8 +177,9 @@ bool BinaryTree::DeleteElement(const int& value)
 		delete deleteNode;
 		return true;
 	}
-	//TODO: RSDN
-	else if ((deleteNode->_left != nullptr && deleteNode->_right == nullptr) || (deleteNode->_left == nullptr && deleteNode->_right != nullptr))
+
+	else if ((deleteNode->_left != nullptr && deleteNode->_right == nullptr) 
+			|| (deleteNode->_left == nullptr && deleteNode->_right != nullptr))
 	{
 		if (deleteNode->_left != nullptr)
 		{
@@ -192,37 +212,11 @@ bool BinaryTree::DeleteElement(const int& value)
 	}
 }
 
-//TODO: RSDN
-void BinaryTree::PrintBinaryTree(Node* root, int space, int count) {
-	if (root == nullptr) {
-		return;
-	}
-
-	space += count;
-	PrintBinaryTree(root->_right, space, count);
-
-	cout << endl;
-
-	//TODO: RSDN
-	for (int i = count; i < space; i++) {
-		cout << " ";
-	}
-
-	cout << root->_value << "\n";
-	PrintBinaryTree(root->_left, space, count);
-}
-
-void BinaryTree::VisualisateBinaryTree()
-{
-	PrintBinaryTree(_root);
-}
-
-int BinaryTree::GetMax()
+Node* BinaryTree::GetMax()
 {
 	if (_root == nullptr)
 	{
-		//TODO: nullptr
-		return NULL;
+		return nullptr;
 	}
 
 	Node* current = _root;
@@ -232,15 +226,14 @@ int BinaryTree::GetMax()
 		current = current->_right;
 	}
 
-	return current->_value;
+	return current;
 }
 
-int BinaryTree::GetMin()
+Node* BinaryTree::GetMin()
 {
 	if (_root == nullptr)
 	{
-		//TODO: nullptr
-		return NULL;
+		return nullptr;
 	}
 
 	Node* current = _root;
@@ -250,7 +243,12 @@ int BinaryTree::GetMin()
 		current = current->_left;
 	}
 
-	return current->_value;
+	return current;
+}
+
+const Node* BinaryTree::GetRoot()
+{
+	return _root;
 }
 
 void BinaryTree::RemoveAll(Node* node)

@@ -1,6 +1,8 @@
-#pragma once
+п»ї#pragma once
 
-//TODO: RSDN - нет комментариев
+/// <summary>
+/// РЈР·РµР» Р±РёРЅР°СЂРЅРѕРіРѕ РґРµСЂРµРІР°
+/// </summary>
 class Node
 {
 public:
